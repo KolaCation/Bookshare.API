@@ -11,15 +11,22 @@ namespace Bookshare.API.MapperProfiles
     {
         public BookProfile()
         {
+            // Book: add
             CreateMap<AddBookRequest, AddBookCommand>();
-            CreateMap<RemoveBookByIdRequest, RemoveBookByIdCommand>();
+
+            // Book: read
             CreateMap<GetBookByIdRequest, GetBookByIdQuery>();
             CreateMap<Book, GetBookByIdResponse>();
             CreateMap<GetBooksRequest, GetBooksQuery>();
             CreateMap<List<Book>, GetBooksResponse>()
                 .ForMember(dest => dest.Books, opt => opt.MapFrom(x => x));
+
+            // Book: update
             CreateMap<UpdateBookByIdRequest, UpdateBookCommand>();
             CreateMap<Book, UpdateBookResponse>();
+
+            // Book: remove
+            CreateMap<RemoveBookByIdRequest, RemoveBookByIdCommand>();
         }
     }
 }
