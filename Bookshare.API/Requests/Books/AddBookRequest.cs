@@ -2,6 +2,8 @@
 {
     public class AddBookRequest
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
+        public int LibraryId { get; set; }
+        public List<int>? AuthorIds { get; set; }
     }
 }

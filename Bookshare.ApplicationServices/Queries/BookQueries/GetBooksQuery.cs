@@ -4,7 +4,7 @@ using Bookshare.DomainServices;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bookshare.ApplicationServices.Queries
+namespace Bookshare.ApplicationServices.Queries.BookQueries
 {
     public sealed class GetBooksQuery : IRequest<OperationResult<List<Book>>>
     {
@@ -14,14 +14,18 @@ namespace Bookshare.ApplicationServices.Queries
     {
         private readonly BookshareDbContext _context;
 
-        public GetBooksQueryHandler(BookshareDbContext bookshareDbContext)
+        public GetBooksQueryHandler(BookshareDbContext context)
         {
-            _context = bookshareDbContext;
+            _context = context;
         }
 
         public async Task<OperationResult<List<Book>>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
         {
-            var books = await _context.Books.ToListAsync(cancellationToken);
+            var books = await _context.Books
+                .Include(x => x.Authors)
+                .Include(x => x.Library)
+                .ToListAsync(cancellationToken);
+
             return OperationResult.Ok(books);
         }
     }

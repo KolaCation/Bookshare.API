@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Bookshare.API.Requests.Books;
 using Bookshare.API.Responses.Books;
-using Bookshare.ApplicationServices.Commands;
-using Bookshare.ApplicationServices.Queries;
+using Bookshare.ApplicationServices.Commands.BookCommands;
+using Bookshare.ApplicationServices.Queries.BookQueries;
 using Bookshare.Domain.General;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -47,10 +47,9 @@ namespace Bookshare.API.Controllers
         }
 
         [HttpGet]
-        public async Task<OperationResult<GetBooksResponse>> GetBooks([FromBody] GetBooksRequest getBooksRequest)
+        public async Task<OperationResult<GetBooksResponse>> GetBooks()
         {
-            var getBooksQuery = _mapper.Map<GetBooksQuery>(getBooksRequest);
-            var operationResult = await _mediator.Send(getBooksQuery);
+            var operationResult = await _mediator.Send(new GetBooksQuery());
 
             if (!operationResult.IsSucceeded)
             {
@@ -73,7 +72,7 @@ namespace Bookshare.API.Controllers
                 return OperationResult.Fail<UpdateBookResponse>(operationResult.Errors);
             }
 
-            var response = _mapper.Map<UpdateBookResponse>(operationResult);
+            var response = _mapper.Map<UpdateBookResponse>(operationResult.Result);
             return OperationResult.Ok(response);
         }
 

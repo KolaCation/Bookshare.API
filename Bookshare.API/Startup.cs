@@ -1,8 +1,10 @@
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Bookshare.API.Helpers;
 using Bookshare.API.Middlewares;
 using Bookshare.ApplicationServices;
-using Bookshare.ApplicationServices.Queries;
+using Bookshare.ApplicationServices.Queries.BookQueries;
 using Bookshare.DomainServices;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -32,6 +34,7 @@ namespace Bookshare.API
                 {
                     options.Filters.Add(typeof(ValidateModelStateAttribute));
                 })
+                .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GetBooksQuery>());
             services.Configure<ApiBehaviorOptions>(options =>
             {

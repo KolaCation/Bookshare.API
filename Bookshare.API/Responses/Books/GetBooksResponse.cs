@@ -4,6 +4,6 @@ namespace Bookshare.API.Responses.Books
 {
     public class GetBooksResponse
     {
-        public List<Book> Books { get; set; }
+        public List<Book>? Books { get; set; }
     }
 }
